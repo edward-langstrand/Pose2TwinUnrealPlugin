@@ -2,7 +2,6 @@
 
 
 #include "Pose2TwinMQTTClient.h"
-#include "Pose2TwinFunctionLibrary.h"
 #include "Pose2TwinLog.h"
 
 // Sets default values
@@ -30,24 +29,5 @@ void APose2TwinMQTTClient::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	while(!QueuedMessages.IsEmpty())
-	{
-		TArray<uint8> PayloadBytes;
-		if(!QueuedMessages.Dequeue(PayloadBytes)) continue;
-		
-		FString PayloadString = UPose2TwinFunctionLibrary::BytesToStringUTF8(PayloadBytes);
-		//TODO(edward): Missing last character for some reason...
-		PayloadString += '}';
-
-		TSharedRef<TJsonReader<>> Reader = FJsonStringReader::Create(PayloadString);
-		
-		TSharedPtr<FJsonObject> PayloadJSON;
-		if(!FJsonSerializer::Deserialize(Reader, PayloadJSON)) continue;
-
-		for (auto It = PayloadJSON.Get()->Values.CreateIterator(); It; ++It)
-		{
-			UE_LOG(LogPose2Twin, Log, TEXT("JSON KEY: %s"), *It.Key())
-		}
-	}
 }
 
