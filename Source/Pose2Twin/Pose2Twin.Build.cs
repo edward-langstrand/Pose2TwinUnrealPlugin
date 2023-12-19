@@ -26,8 +26,7 @@ public class Pose2Twin : ModuleRules
 		PublicDependencyModuleNames.AddRange(
 			new string[]
 			{
-				"Core",
-				"MQTTCore"
+				"Core"
 				// ... add other public dependencies that you statically link with here ...
 			}
 			);
